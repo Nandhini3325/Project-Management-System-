@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Projects</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+
+      body {
+        background-color: #f0f4f8;
+        color: #334155;
+        line-height: 1.6;
+      }
+
+      .navbar {
+        background-color: #3b82f6;
+        color: white;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(59, 130, 246, 0.15);
+      }
+
+      .navbar .brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .navbar .brand::before {
+        content: "🛡️";
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+      }
+
+      .main-content {
+        max-width: 1200px;
+        margin: 2rem auto 4rem;
+        padding: 0 2rem;
+      }
+
+      .projects-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2.5rem;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+        color: #1e293b;
+        font-weight: 800;
+        position: relative;
+        display: inline-block;
+        letter-spacing: -0.5px;
+      }
+
+      h1::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 70px;
+        height: 4px;
+        background-color: #3b82f6;
+        border-radius: 4px;
+      }
+
+      .btn-primary {
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        padding: 0.85rem 1.8rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+      }
+
+      .btn-primary:hover {
+        background-color: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+      }
+
+      .projects-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 2rem;
+      }
+
+      .project-card {
+        background: white;
+        border-radius: 16px;
+        padding: 1.8rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(226, 232, 240, 0.7);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .project-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      }
+
+      .project-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+      }
+
+      .project-card h3 {
+        font-size: 1.5rem;
+        color: #1e293b;
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.9rem;
+        border-bottom: 2px solid #f1f5f9;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+      }
+
+      .project-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .detail-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.2rem;
+      }
+
+      .detail-label {
+        font-weight: 600;
+        color: #64748b;
+        min-width: 120px;
+        font-size: 0.95rem;
+      }
+
+      .detail-label::after {
+        content: ":";
+      }
+
+      .team-section {
+        background-color: #f8fafc;
+        padding: 1.2rem;
+        border-radius: 12px;
+        margin-top: 1.5rem;
+        border: 1px solid #e2e8f0;
+      }
+
+      .team-section h4 {
+        font-size: 1.15rem;
+        color: #1e293b;
+        margin-bottom: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 700;
+      }
+
+      .team-section h4::before {
+        content: "👥";
+      }
+
+      .team-list {
+        list-style: none;
+      }
+
+      .team-list li {
+        padding: 0.6rem 0;
+        color: #475569;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-bottom: 1px dashed #e2e8f0;
+      }
+
+      .team-list li:last-child {
+        border-bottom: none;
+      }
+
+      .team-list li::before {
+        content: "•";
+        color: #3b82f6;
+        font-size: 1.4em;
+      }
+
+      .status-in-progress {
+        color: #3b82f6;
+        font-weight: 600;
+        background-color: rgba(59, 130, 246, 0.1);
+        padding: 0.3rem 0.7rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        display: inline-block;
+      }
+
+      .status-completed {
+        color: #10b981;
+        font-weight: 600;
+        background-color: rgba(16, 185, 129, 0.1);
+        padding: 0.3rem 0.7rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        display: inline-block;
+      }
+
+      .status-pending {
+        color: #f59e0b;
+        font-weight: 600;
+        background-color: rgba(245, 158, 11, 0.1);
+        padding: 0.3rem 0.7rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        display: inline-block;
+      }
+
+      .priority-high {
+        color: #ef4444;
+        font-weight: 600;
+        background-color: rgba(239, 68, 68, 0.1);
+        padding: 0.3rem 0.7rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        display: inline-block;
+      }
+
+      .priority-medium {
+        color: #f59e0b;
+        font-weight: 600;
+        background-color: rgba(245, 158, 11, 0.1);
+        padding: 0.3rem 0.7rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        display: inline-block;
+      }
+
+      .priority-low {
+        color: #10b981;
+        font-weight: 600;
+        background-color: rgba(16, 185, 129, 0.1);
+        padding: 0.3rem 0.7rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        display: inline-block;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #64748b;
+        font-size: 1.2rem;
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin: 2rem 0;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 3rem;
+        color: #64748b;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 0.7rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        transition: all 0.2s ease;
+        border: none;
+      }
+
+      .btn-edit {
+        background-color: #f3f4f6;
+        color: #374151;
+        border: 1px solid #d1d5db;
+      }
+
+      .btn-edit:hover {
+        background-color: #e5e7eb;
+        transform: translateY(-2px);
+      }
+
+      .btn-delete {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+      }
+
+      .btn-delete:hover {
+        background-color: #fecaca;
+        transform: translateY(-2px);
+      }
+
+      .status-dropdown {
+        background-color: #f3f4f6;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+        color: #374151;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .status-dropdown:focus {
+        outline: 2px solid #93c5fd;
+        border-color: #93c5fd;
+      }
+
+      .status-dropdown:hover {
+        background-color: #e5e7eb;
+      }
+
+      .filter-controls {
+        display: flex;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+      }
+
+      .filter-dropdown {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+      }
+
+      .filter-dropdown label {
+        font-weight: 600;
+        color: #64748b;
+        font-size: 0.95rem;
+      }
+
+      .filter-select {
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        border: 1px solid #cbd5e1;
+        background-color: white;
+        color: #334155;
+        font-size: 0.95rem;
+        cursor: pointer;
+        min-width: 180px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease;
+      }
+
+      .filter-select:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      }
+
+      .filter-select:hover {
+        border-color: #93c5fd;
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s linear 0.25s, opacity 0.25s linear;
+        overflow-y: auto;
+        padding: 20px;
+        backdrop-filter: blur(5px);
+      }
+
+      .modal-overlay.active {
+        visibility: visible;
+        opacity: 1;
+        transition-delay: 0s;
+      }
+
+      .modal {
+        background-color: white;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 16px;
+        padding: 2.5rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        position: relative;
+        max-height: 85vh;
+        overflow-y: auto;
+        margin: auto;
+      }
+
+      .modal-header {
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.8rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f1f5f9;
+      }
+
+      .modal-header h2 {
+        font-size: 1.8rem;
+        color: #1e293b;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+      }
+
+      .modal-footer {
+        position: sticky;
+        bottom: 0;
+        background-color: white;
+        z-index: 10;
+        margin-top: 2rem;
+        padding-top: 1.2rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        border-top: 1px solid #f1f5f9;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: #64748b;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+      }
+
+      .modal-close:hover {
+        background-color: #f1f5f9;
+        color: #334155;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.6rem;
+        font-weight: 600;
+        color: #334155;
+        font-size: 0.95rem;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: #1e293b;
+        transition: all 0.2s ease;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+      }
+
+      .team-inputs {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .team-inputs .form-control {
+        flex: 1;
+      }
+
+      .btn-add-member {
+        background-color: #dbeafe;
+        color: #3b82f6;
+        border: 1px solid #bfdbfe;
+        margin-top: 0.7rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+      }
+
+      .btn-add-member:hover {
+        background-color: #bfdbfe;
+        transform: translateY(-2px);
+      }
+
+      .team-member-list {
+        margin-top: 0.8rem;
+      }
+
+      .team-member-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.7rem 1rem;
+        background-color: #f8fafc;
+        border-radius: 8px;
+        margin-bottom: 0.7rem;
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s ease;
+      }
+
+      .team-member-item:hover {
+        background-color: #f1f5f9;
+      }
+
+      .btn-remove-member {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        border: none;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: bold;
+      }
+
+      .btn-remove-member:hover {
+        background-color: #fecaca;
+        transform: scale(1.1);
+      }
+
+      .success-message {
+        background-color: #dcfce7;
+        color: #166534;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        display: none;
+        font-weight: 600;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #10b981;
+        position: relative;
+      }
+
+      .error-message {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        display: none;
+        font-weight: 600;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #ef4444;
+        position: relative;
+      }
+
+      .message {
+        text-align: center;
+        padding: 1rem;
+        margin-top: 1rem;
+        border-radius: 8px;
+        color: #64748b;
+      }
+
+      @media (max-width: 768px) {
+        .navbar {flex-direction: column;gap: 1rem;text-align: center;}
+        .nav-links {flex-wrap: wrap;justify-content: center;}
+        .projects-header {flex-direction: column;gap: 1.2rem;text-align: center;}
+        h1::after {left: 50%;transform: translateX(-50%);}
+        .projects-container {grid-template-columns: 1fr;}
+        .team-inputs {flex-direction: column;gap: 0.7rem;}
+        .filter-controls {order: 3;width: 100%;margin-top: 1rem;}
+        .filter-dropdown {flex: 1;min-width: 200px;}
+      }
+
+      @media (max-width: 576px) {
+        .filter-controls {flex-direction: column;}
+        .filter-dropdown {width: 100%;}
+        .modal {padding: 1.5rem;}
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="#" class="brand">TaskFlow</a>
+      <div class="nav-links">
+        <a href="dashboard.html">Home</a>
+        <a href="show.html" class="active">Projects</a>
+        <a href="task.html">Tasks</a>
+        <a href="cal.html">Calendar</a>
+        <a href="index.html">Logout</a>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <header class="projects-header">
+        <h1>Your Projects</h1>
+        <div class="filter-controls">
+          <div class="filter-dropdown">
+            <label for="projectFilter">Filter by:</label>
+            <select id="projectFilter" class="filter-select"onchange="filterProjects()">
+              <option value="all">All Projects</option>
+              <option value="statusInProgress">Status: In Progress</option>
+              <option value="statusCompleted">Status: Completed</option>
+              <option value="statusPending">Status: Pending</option>
+              <option value="priorityHigh">Priority: High</option>
+              <option value="priorityMedium">Priority: Medium</option>
+              <option value="priorityLow">Priority: Low</option>
+            </select>
+          </div>
+          <div class="filter-dropdown">
+            <label for="projectSort">Sort by:</label>
+            <select id="projectSort" class="filter-select"onchange="filterProjects()">
+              <option value="newest">Recently Created</option>
+              <option value="nameAsc">Name (A-Z)</option>
+              <option value="nameDesc">Name (Z-A)</option>
+              <option value="dueDateAsc">Due Date (Earliest First)</option>
+              <option value="dueDateDesc">Due Date (Latest First)</option>
+              <option value="budgetAsc">Budget (Low to High)</option>
+              <option value="budgetDesc">Budget (High to Low)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="openAddModal()">
+          Add New Project
+        </button>
+      </header>
+
+      <div id="projectsContainer" class="projects-container">
+        <!-- Projects will be added here -->
+      </div>
+
+      <p id="message" class="message"></p>
+    </main>
+
+    <div id="addModal" class="modal-overlay">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Add New Project</h2>
+          <button class="modal-close" onclick="closeAddModal()">×</button>
+        </div>
+        <div id="addSuccessMessage" class="success-message"></div>
+        <div id="addErrorMessage" class="error-message"></div>
+        <form id="addProjectForm">
+          <div class="form-group">
+            <label for="projectName">Project Name</label>
+            <input type="text" id="projectName" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" class="form-control" rows="3"required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="dueDate">Due Date</label>
+            <input type="date" id="dueDate" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label for="priority">Priority</label>
+            <select id="priority" class="form-control" required>
+              <option value="High">High</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" class="form-control" required>
+              <option value="In Progress" selected>In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="Pending">Pending</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="budget">Budget (₹)</label>
+            <input type="number" id="budget" class="form-control" min="0" required />
+          </div>
+          <div class="form-group">
+            <label>Team Members</label>
+            <div id="newTeamMembersList" class="team-member-list">
+            </div>
+            <div class="team-inputs">
+              <input type="text" id="newMemberName" class="form-control" placeholder="Member Name"/>
+              <input type="text" id="newMemberRole" class="form-control" placeholder="Role"/>
+            </div>
+            <button type="button" class="btn btn-add-member" onclick="addNewTeamMember()">Add Member</button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-edit" onclick="closeAddModal()">Cancel</button>
+            <button type="submit" class="btn-primary">Create Project</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Project Modal -->
+    <div id="editModal" class="modal-overlay">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Edit Project</h2>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        <div id="editSuccessMessage" class="success-message"></div>
+        <div id="editErrorMessage" class="error-message"></div>
+        <form id="editProjectForm">
+          <input type="hidden" id="editProjectId" />
+          <div class="form-group">
+            <label for="editProjectName">Project Name</label>
+            <input type="text" id="editProjectName" class="form-control" required/>
+          </div>
+          <div class="form-group">
+            <label for="editDescription">Description</label>
+            <textarea id="editDescription" class="form-control" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="editDueDate">Due Date</label>
+            <input type="date" id="editDueDate" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label for="editPriority">Priority</label>
+            <select id="editPriority" class="form-control" required>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editStatus">Status</label>
+            <select id="editStatus" class="form-control" required>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="Pending">Pending</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editBudget">Budget (₹)</label>
+            <input type="number" id="editBudget" class="form-control" min="0" required/>
+          </div>
+          <div class="form-group">
+            <label>Team Members</label>
+            <div id="teamMembersList" class="team-member-list">
+            </div>
+            <div class="team-inputs">
+              <input type="text" id="memberName" class="form-control" placeholder="Member Name"/>
+              <input type="text" id="memberRole" class="form-control" placeholder="Role"/>
+            </div>
+            <button type="button" class="btn btn-add-member" onclick="addTeamMemberField()">Add Member</button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-edit" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        if (!storedUser || !storedUser.id) {
+          document.getElementById("message").textContent ="User not found. Please log in.";
+          return;
+        }
+        await loadProjects();
+      });
+
+      let allProjects = [];
+      let newTeamMembers = [];
+
+      async function loadProjects() {
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        try {
+          const response = await fetch(`/get-projects/${storedUser.id}`);
+          if (!response.ok) {
+            const errorData = await response.json();
+            document.getElementById("message").textContent =errorData.message || "Failed to load projects.";
+            return false;
+          }
+          let projects = await response.json();
+          projects = projects.map((project) => {
+            if (!project.teamMembers) {
+              project.teamMembers = [];
+              return project;
+            }
+
+            if (typeof project.teamMembers === "string") {
+              try {
+                project.teamMembers = JSON.parse(project.teamMembers);
+              } catch (e) {
+                project.teamMembers = [];
+              }
+            }
+
+            if (!Array.isArray(project.teamMembers)) {
+              if (project.teamMembers && typeof project.teamMembers === "object") {
+                project.teamMembers = Object.values(project.teamMembers);
+              } else {
+                project.teamMembers = [];
+              }
+            }
+            return project;
+          });
+
+          allProjects = projects;
+          displayProjects(allProjects);
+          return true;
+        } catch (error) {
+          document.getElementById("message").textContent ="Something went wrong while loading projects!";
+          return false;
+        }
+      }
+      function displayProjects(projectsToShow) {
+        const container = document.getElementById("projectsContainer");
+        container.innerHTML = ""; 
+        if (projectsToShow.length === 0) {
+          container.innerHTML ='<div class="empty-state">No projects found matching your filters.</div>';
+          return;
+        }
+
+        projectsToShow.forEach((project) => {
+          const card = document.createElement("div");
+          card.className = "project-card";
+
+          const statusClass = project.status.toLowerCase().replace(/\s+/g, "-");
+          const priorityClass = project.priority.toLowerCase();
+
+          let teamMembers = [];
+          if (project.teamMembers) {
+            if (Array.isArray(project.teamMembers)) {
+              teamMembers = project.teamMembers;
+            } else if (typeof project.teamMembers === "string") {
+              try {
+                teamMembers = JSON.parse(project.teamMembers);
+              } catch (e) {
+                teamMembers = [];
+              }
+            } else if (typeof project.teamMembers === "object") {
+              teamMembers = Object.values(project.teamMembers);
+            }
+          }
+          let teamMembersHTML = "";
+          if (teamMembers && teamMembers.length > 0) {
+            teamMembersHTML = `<ul class="team-list">
+              ${teamMembers.map((member, index) => {
+              return `<li>${member.name} - ${member.role}</li>`;
+            })
+            .join("")}</ul>`;
+          } else {
+            teamMembersHTML = `<p>No team members assigned</p>`;
+          }
+
+          card.innerHTML = `<h3>${project.projectName}</h3>
+          <div class="project-details">
+            <div class="detail-item">
+              <span class="detail-label">Description</span>
+              <span>${project.description}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Due Date</span>
+              <span>${new Date(project.dueDate).toLocaleDateString()}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Priority</span>
+              <span class="priority-${priorityClass}">${project.priority}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Status</span>
+              <span class="status-${statusClass}" id="status-${project._id}">${project.status}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Budget</span>
+              <span>₹${project.budget}</span>
+            </div>
+          </div>
+          <div class="team-section">
+            <h4>Team Members</h4>
+            ${teamMembersHTML}
+          </div>
+          <div class="action-buttons">
+            <select class="status-dropdown" onchange="updateProjectStatus('${project._id}', this.value)">
+              <option value="">Change Status</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="Pending">Pending</option>
+            </select>
+            <button class="btn btn-edit" onclick="openEditModal('${project._id}')">Edit</button>
+            <button class="btn btn-delete" onclick="deleteProject('${project._id}')">Delete</button>
+          </div>`;
+          container.appendChild(card);
+        });
+      }
+      function filterProjects() {
+        const filterValue = document.getElementById("projectFilter").value;
+        const sortValue = document.getElementById("projectSort").value;
+        let filteredProjects = [...allProjects]; 
+        if (filterValue !== "all") {
+          if (filterValue.startsWith("status")) {
+            const status = filterValue.replace("status", "");
+            const formattedStatus =status.charAt(0).toUpperCase() +status.slice(1).replace(/([A-Z])/g, " $1");
+            filteredProjects = filteredProjects.filter((project) => project.status === formattedStatus);
+          } else if (filterValue.startsWith("priority")) {
+            const priority = filterValue.replace("priority", "");
+            const formattedPriority =priority.charAt(0).toUpperCase() + priority.slice(1);
+            filteredProjects = filteredProjects.filter((project) => project.priority === formattedPriority);
+          }
+        }
+        switch (sortValue) {
+          case "newest":
+            filteredProjects.sort((a, b) =>new Date(b.createdAt || b._id) - new Date(a.createdAt || a._id));
+            break;
+          case "nameAsc":
+            filteredProjects.sort((a, b) =>a.projectName.localeCompare(b.projectName));
+            break;
+          case "nameDesc":
+            filteredProjects.sort((a, b) =>b.projectName.localeCompare(a.projectName));
+            break;
+          case "dueDateAsc":
+            filteredProjects.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+            break;
+          case "dueDateDesc":
+            filteredProjects.sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate));
+            break;
+          case "budgetAsc":
+            filteredProjects.sort((a, b) => parseFloat(a.budget) - parseFloat(b.budget));
+            break;
+          case "budgetDesc":
+            filteredProjects.sort((a, b) => parseFloat(b.budget) - parseFloat(a.budget));
+            break;
+        }
+        displayProjects(filteredProjects);
+      }
+
+      function openAddModal() {
+        document.getElementById("addModal").classList.add("active");
+        document.getElementById("addSuccessMessage").style.display = "none";
+        document.getElementById("addErrorMessage").style.display = "none";
+        document.getElementById("addProjectForm").reset();
+        newTeamMembers = [];
+        renderNewTeamMembers();
+      }
+
+      function closeAddModal() {
+        document.getElementById("addModal").classList.remove("active");
+        document.getElementById("addSuccessMessage").style.display = "none";
+        document.getElementById("addErrorMessage").style.display = "none";
+        document.getElementById("addProjectForm").reset();
+        newTeamMembers = [];
+        renderNewTeamMembers();
+      }
+
+      function addNewTeamMember() {
+        const name = document.getElementById("newMemberName").value.trim();
+        const role = document.getElementById("newMemberRole").value.trim();
+        if (!name || !role) {
+          alert("Both member name and role are required");
+          return;
+        }
+        newTeamMembers.push({ name, role });
+        renderNewTeamMembers();
+        document.getElementById("newMemberName").value = "";
+        document.getElementById("newMemberRole").value = "";
+        
+      }
+
+      function renderNewTeamMembers() {
+        const container = document.getElementById("newTeamMembersList");
+        container.innerHTML = "";
+
+        newTeamMembers.forEach((member, index) => {
+          const memberItem = document.createElement("div");
+          memberItem.className = "team-member-item";
+          memberItem.innerHTML = `<span>${member.name} - ${member.role}</span><button type="button" class="btn-remove-member" onclick="removeNewTeamMember(${index})">×</button>`;
+          container.appendChild(memberItem);
+        });
+      }
+
+      function removeNewTeamMember(index) {
+        newTeamMembers.splice(index, 1);
+        renderNewTeamMembers();
+      }
+      document.getElementById("addProjectForm").addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const storedUser = JSON.parse(localStorage.getItem("user"));
+          if (!storedUser || !storedUser.id) {
+            const errorMsg = document.getElementById("addErrorMessage");
+            errorMsg.textContent = "User not found. Please log in again.";
+            errorMsg.style.display = "block";
+            return;
+          }
+          const currentTeamMembers = JSON.parse(JSON.stringify(newTeamMembers));
+          const projectData = {
+            userId: storedUser.id,
+            projectName: document.getElementById("projectName").value,
+            description: document.getElementById("description").value,
+            dueDate: document.getElementById("dueDate").value,
+            priority: document.getElementById("priority").value,
+            status: document.getElementById("status").value,
+            budget: document.getElementById("budget").value,
+            teamMembers: currentTeamMembers, 
+          };
+          try {
+            const response = await fetch("/submit-project", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },body: JSON.stringify(projectData),
+            });
+            const result = await response.json();
+            if (response.ok) {
+              const successMsg = document.getElementById("addSuccessMessage");
+              successMsg.textContent = "Project created successfully!";
+              successMsg.style.display = "block";
+
+              setTimeout(() => {
+                loadProjects().then(() => {closeAddModal();
+                  newTeamMembers = [];
+                  document.getElementById("addProjectForm").reset();
+                });}, 1500);
+            } else {
+              const errorMsg = document.getElementById("addErrorMessage");
+              errorMsg.textContent =result.message || "Failed to create project.";
+              errorMsg.style.display = "block";
+            }
+          } catch (error) {
+            const errorMsg = document.getElementById("addErrorMessage");
+            errorMsg.textContent ="An error occurred while creating the project.";
+            errorMsg.style.display = "block";
+          }
+        });
+
+      let teamMembers = [];
+      function openEditModal(projectId) {
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+
+        fetch(`/get-projects/${storedUser.id}`).then((response) => response.json()).then((projects) => {
+            const project = projects.find((p) => p._id === projectId);
+            if (project) {
+              document.getElementById("editProjectId").value = projectId;
+              document.getElementById("editProjectName").value =project.projectName;
+              document.getElementById("editDescription").value =project.description;
+              document.getElementById("editDueDate").value = new Date(project.dueDate).toISOString().split("T")[0];
+              document.getElementById("editPriority").value = project.priority;
+              document.getElementById("editStatus").value = project.status;
+              document.getElementById("editBudget").value = project.budget;
+              teamMembers = [...project.teamMembers];
+              renderTeamMembers();
+
+              document.getElementById("editModal").classList.add("active");
+            }
+          })
+          .catch((error) => {
+          });
+      }
+
+      function closeModal() {
+        document.getElementById("editModal").classList.remove("active");
+        document.getElementById("editSuccessMessage").style.display = "none";
+        document.getElementById("editErrorMessage").style.display = "none";
+      }
+
+      function renderTeamMembers() {
+        const container = document.getElementById("teamMembersList");
+        container.innerHTML = "";
+
+        teamMembers.forEach((member, index) => {
+          const memberItem = document.createElement("div");
+          memberItem.className = "team-member-item";
+          memberItem.innerHTML = `<span>${member.name} - ${member.role}</span>
+          <button type="button" class="btn-remove-member" onclick="removeTeamMember(${index})">×</button>`;
+          container.appendChild(memberItem);
+        });
+      }
+
+      function addTeamMemberField() {
+        const name = document.getElementById("memberName").value.trim();
+        const role = document.getElementById("memberRole").value.trim();
+        if (name && role) {
+          teamMembers.push({ name, role });
+          renderTeamMembers();
+          document.getElementById("memberName").value = "";
+          document.getElementById("memberRole").value = "";
+        }
+      }
+
+      function removeTeamMember(index) {
+        teamMembers.splice(index, 1);
+        renderTeamMembers();
+      }
+      document.getElementById("editProjectForm").addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const storedUser = JSON.parse(localStorage.getItem("user"));
+          const projectId = document.getElementById("editProjectId").value;
+          const currentTeamMembers = JSON.parse(JSON.stringify(teamMembers));
+
+          const projectData = {
+            userId: storedUser.id,
+            projectName: document.getElementById("editProjectName").value,
+            description: document.getElementById("editDescription").value,
+            dueDate: document.getElementById("editDueDate").value,
+            priority: document.getElementById("editPriority").value,
+            status: document.getElementById("editStatus").value,
+            budget: document.getElementById("editBudget").value,
+            teamMembers: currentTeamMembers,
+          };
+
+          try {
+            const response = await fetch(`/api/projects/${projectId}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },body: JSON.stringify(projectData),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+              const successMsg = document.getElementById("editSuccessMessage");
+              successMsg.textContent =result.message || "Project updated successfully!";
+              successMsg.style.display = "block";
+              setTimeout(() => {loadProjects();
+              closeModal();}, 1500);
+            } else {
+              const errorMsg = document.getElementById("editErrorMessage");
+              errorMsg.textContent =result.message || "Failed to update project.";
+              errorMsg.style.display = "block";
+            }
+          } catch (error) {
+            const errorMsg = document.getElementById("editErrorMessage");
+            errorMsg.textContent ="An error occurred while updating the project.";
+            errorMsg.style.display = "block";
+          }
+        });
+      async function updateProjectStatus(projectId, newStatus) {
+        if (!newStatus) return; 
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        try {
+          const response = await fetch(`/api/projects/${projectId}/status`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: storedUser.id,
+              status: newStatus,
+            }),
+          });
+          const result = await response.json();
+          if (response.ok) {
+            const statusElement = document.getElementById(`status-${projectId}`);
+            if (statusElement) {
+              statusElement.textContent = newStatus;
+              statusElement.className = ""; 
+              const statusClass = newStatus.toLowerCase().replace(/\s+/g, "-");
+              statusElement.classList.add(`status-${statusClass}`);
+            }
+            const projectIndex = allProjects.findIndex((p) => p._id === projectId);
+            if (projectIndex !== -1) {
+              allProjects[projectIndex].status = newStatus;
+            }
+          } else {
+            alert(result.message || "Failed to update status");
+          }
+        } catch (error) {
+          alert("An error occurred while updating the project status");
+        }
+      }
+
+      async function deleteProject(projectId) {
+        if (!confirm("Are you sure you want to delete this project? This action cannot be undone.")) {
+          return;
+        }
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+        if (!storedUser || !storedUser.id) {
+          alert("User session not found. Please log in again.");
+          return;
+        }
+        try {
+          const response = await fetch(`/api/projects/${projectId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },body: JSON.stringify({userId: storedUser.id,
+            }),
+          });
+
+          if (response.status === 404) {
+            const altResponse = await fetch(`/delete-project/${projectId}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({userId: storedUser.id,}),
+            });
+            if (!altResponse.ok) {
+              throw new Error(`Server returned ${altResponse.status}`);
+            }
+            const result = await altResponse.json();
+            alert(result.message || "Project deleted successfully");
+          } else if (!response.ok) {
+            throw new Error(`Server returned ${response.status}`);
+          } else {
+            const result = await response.json();
+            alert(result.message || "Project deleted successfully");
+          }
+          loadProjects();
+        } catch (error) {
+          console.error("Error deleting project:", error);
+          alert("An error occurred while deleting the project: " + error.message);
+        }
+      }
+    </script>
+  </body>
+</html>

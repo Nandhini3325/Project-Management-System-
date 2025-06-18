@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link favicon="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+    <title>Dashboard - TaskFlow</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .navbar {
+        background-color: #3b82f6;
+        color: white;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(59, 130, 246, 0.15);
+      }
+
+      .navbar .brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .navbar .brand::before {
+        content: "🛡️";
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+      }
+
+      .dashboard-container {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .dashboard-title {
+        font-size: 2.2rem;
+        margin-bottom: 2rem;
+        color: #333;
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .dashboard-title:after {
+        content: "";
+        position: absolute;
+        width: 70px;
+        height: 3px;
+        background-color: #4a6fdc;
+        bottom: -10px;
+        left: 0;
+      }
+
+      .stats-container {
+        margin-bottom: 2rem;
+      }
+
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .stat-card {
+        background-color: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border-top: 4px solid transparent;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-label {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        color: #555;
+      }
+
+      .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #333;
+      }
+
+      .bg-blue {
+        border-color: #4a6fdc;
+      }
+
+      .bg-green {
+        border-color: #28a745;
+      }
+
+      .bg-yellow {
+        border-color: #ffc107;
+      }
+
+      .bg-purple {
+        border-color: #7952b3;
+      }
+
+      .bg-indigo {
+        border-color: #6610f2;
+      }
+
+      .bg-teal {
+        border-color: #20c997;
+      }
+
+      .bg-orange {
+        border-color: #fd7e14;
+      }
+
+      .bg-pink {
+        border-color: #e83e8c;
+      }
+
+      .bg-cyan {
+        border-color: #17a2b8;
+      }
+
+      .bg-blue .stat-label:before {
+        content: "📁 ";
+      }
+
+      .bg-green .stat-label:before {
+        content: "✅ ";
+      }
+
+      .bg-yellow .stat-label:before {
+        content: "⏱️ ";
+      }
+
+      .bg-purple .stat-label:before {
+        content: "👥 ";
+      }
+
+      .bg-indigo .stat-label:before {
+        content: "📋 ";
+      }
+
+      .bg-teal .stat-label:before {
+        content: "✓ ";
+      }
+
+      .bg-pink .stat-label:before {
+        content: "⏳ ";
+      }
+
+      .bg-cyan .stat-label:before {
+        content: "🔄 ";
+      }
+
+      .bg-orange .stat-label:before {
+        content: "⚙️ ";
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .content-section {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .section-header {
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .section-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .project-section .section-title:before {
+        content: "⏰";
+      }
+
+      .task-section .section-title:before {
+        content: "📝";
+      }
+
+      .team-section .section-title:before {
+        content: "👥";
+      }
+
+      .section-content {
+        flex: 1;
+        overflow-y: auto;
+        max-height: 400px;
+      }
+
+      .list-item {
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .list-item:last-child {
+        border-bottom: none;
+      }
+
+      .item-header {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #333;
+        margin-bottom: 0.5rem;
+      }
+
+      .item-meta {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .priority-badge {
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .priority-high {
+        background-color: #ffebee;
+        color: #d32f2f;
+      }
+
+      .priority-medium {
+        background-color: #fff8e1;
+        color: #ff8f00;
+      }
+
+      .priority-low {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+      }
+
+      .date-badge {
+        color: #666;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .date-badge:before {
+        content: "📅 ";
+        margin-right: 0.3rem;
+      }
+
+      .no-items-message {
+        padding: 2rem;
+        text-align: center;
+        color: #666;
+        font-style: italic;
+      }
+
+      .team-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .team-item:last-child {
+        border-bottom: none;
+      }
+
+      .member-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .member-details {
+        flex: 1;
+      }
+
+      .member-name {
+        font-weight: 500;
+        margin-bottom: 0.2rem;
+      }
+
+      .member-project {
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      @media (max-width: 1024px) {
+        .content-grid {grid-template-columns: 1fr 1fr;}
+        .stats-row {grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));}
+      }
+
+      @media (max-width: 768px) {
+        .navbar {flex-direction: column;padding: 1rem; }
+        .nav-links {margin-top: 1rem;flex-wrap: wrap;justify-content: center;}
+        .dashboard-container {padding: 1.5rem;}
+        .content-grid {grid-template-columns: 1fr;}
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="#" class="brand">TaskFlow</a>
+      <div class="nav-links">
+        <a href="dashboard.html">Home</a>
+        <a href="show.html">Projects</a>
+        <a href="task.html">Tasks</a>
+        <a href="cal.html">Calendar</a>
+        <a href="profile.html">Profile</a>
+
+        <a href="index.html">Logout</a>
+      </div>
+    </nav>
+
+    <div class="dashboard-container">
+      <h1 class="dashboard-title">📊 Dashboard</h1>
+
+      <div class="stats-container">
+        <div class="stats-row">
+          <div class="stat-card bg-blue">
+            <p class="stat-label">Total Projects</p>
+            <p class="stat-value" id="totalProjects">0</p>
+          </div>
+
+          <div class="stat-card bg-green">
+            <p class="stat-label">Completed Projects</p>
+            <p class="stat-value" id="completedProjects">0</p>
+          </div>
+
+          <div class="stat-card bg-yellow">
+            <p class="stat-label">Pending Projects</p>
+            <p class="stat-value" id="pendingProjects">0</p>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card bg-indigo">
+            <p class="stat-label">Total Tasks</p>
+            <p class="stat-value" id="totalTasks">0</p>
+          </div>
+
+          <div class="stat-card bg-teal">
+            <p class="stat-label">Completed Tasks</p>
+            <p class="stat-value" id="completedTasks">0</p>
+          </div>
+
+          <div class="stat-card bg-pink">
+            <p class="stat-label">Pending Tasks</p>
+            <p class="stat-value" id="pendingTasks">0</p>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card bg-orange">
+            <p class="stat-label">In Progress Projects</p>
+            <p class="stat-value" id="inProgressProjects">0</p>
+          </div>
+
+          <div class="stat-card bg-cyan">
+            <p class="stat-label">In Progress Tasks</p>
+            <p class="stat-value" id="inProgressTasks">0</p>
+          </div>
+
+          <div class="stat-card bg-purple">
+            <p class="stat-label">Team Members</p>
+            <p class="stat-value" id="teamMembers">0</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="content-section project-section">
+          <div class="section-header">
+            <h2 class="section-title">Pending Projects</h2>
+          </div>
+          <div class="section-content" id="pendingProjectsList">
+            <p class="no-items-message">Loading projects...</p>
+          </div>
+        </div>
+
+        <div class="content-section task-section">
+          <div class="section-header">
+            <h2 class="section-title">Pending Tasks</h2>
+          </div>
+          <div class="section-content" id="pendingTasksList">
+            <p class="no-items-message">Loading tasks...</p>
+          </div>
+        </div>
+
+        <div class="content-section team-section">
+          <div class="section-header">
+            <h2 class="section-title">Team Members</h2>
+          </div>
+          <div class="section-content" id="teamMembersList">
+            <p class="no-items-message">Loading team members...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      async function fetchDashboardData() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userId = user && user.id;
+        if (!userId) return;
+
+        try {
+          const dashboardResponse = await fetch(`/api/dashboard?userId=${userId}`);
+          const dashboardData = await dashboardResponse.json();
+
+          if (dashboardResponse.ok) {
+            document.getElementById("totalProjects").innerText = dashboardData.totalProjects;
+            document.getElementById("teamMembers").innerText = dashboardData.teamMembers;
+
+            const projectsResponse = await fetch(`/get-projects/${userId}`);
+
+            if (projectsResponse.ok && projectsResponse.status !== 204) {
+              const projects = await projectsResponse.json();
+              const completedProjects = projects.filter((p) => p.status === "Completed").length;
+              const pendingProjects = projects.filter((p) => p.status === "Pending").length;
+              const inProgressProjects = projects.filter((p) => p.status === "In Progress").length;
+
+              document.getElementById("completedProjects").innerText = completedProjects;
+              document.getElementById("pendingProjects").innerText = pendingProjects;
+              document.getElementById("inProgressProjects").innerText = inProgressProjects;
+            } else {
+              document.getElementById("completedProjects").innerText = "0";
+              document.getElementById("pendingProjects").innerText = "0";
+              document.getElementById("inProgressProjects").innerText = "0";
+            }
+
+            const tasksResponse = await fetch(`/api/tasks?userId=${userId}`);
+
+            if (tasksResponse.ok && tasksResponse.status !== 204) {
+              const tasksData = await tasksResponse.json();
+
+              if (tasksData.tasks && tasksData.tasks.length > 0) {
+                const totalTasks = tasksData.tasks.length;
+                const completedTasks = tasksData.tasks.filter((t) => t.status === "Completed").length;
+                const pendingTasks = tasksData.tasks.filter((t) => t.status === "Pending").length;
+                const inProgressTasks = tasksData.tasks.filter((t) => t.status === "In Progress").length;
+
+                document.getElementById("totalTasks").innerText = totalTasks;
+                document.getElementById("completedTasks").innerText = completedTasks;
+                document.getElementById("pendingTasks").innerText = pendingTasks;
+                document.getElementById("inProgressTasks").innerText = inProgressTasks;
+              } else {
+                document.getElementById("totalTasks").innerText = "0";
+                document.getElementById("completedTasks").innerText = "0";
+                document.getElementById("pendingTasks").innerText = "0";
+                document.getElementById("inProgressTasks").innerText = "0";
+              }
+            } else {
+              document.getElementById("totalTasks").innerText = "0";
+              document.getElementById("completedTasks").innerText = "0";
+              document.getElementById("pendingTasks").innerText = "0";
+              document.getElementById("inProgressTasks").innerText = "0";
+            }
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+
+      async function fetchPendingProjects() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userId = user && user.id;
+        if (!userId) return;
+
+        try {
+          const response = await fetch(`/get-projects/${userId}`);
+
+          if (response.status === 204) {
+            document.getElementById("pendingProjectsList").innerHTML = '<p class="no-items-message">No pending projects available.</p>';
+            return;
+          }
+
+          const projects = await response.json();
+          const pendingProjects = projects.filter((project) => project.status === "Pending");
+          const projectsListElement = document.getElementById("pendingProjectsList");
+
+          if (pendingProjects.length === 0) {
+            projectsListElement.innerHTML = '<p class="no-items-message">No pending projects available.</p>';
+            return;
+          }
+
+          pendingProjects.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+          
+          let projectsHTML = "";
+          pendingProjects.forEach((project) => {
+            const dueDate = new Date(project.dueDate);
+            const formattedDate = dueDate.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            });
+
+            projectsHTML += `
+          <div class="list-item">
+            <div class="item-header">${project.projectName}</div>
+            <div class="item-meta">
+              <span class="priority-badge priority-${project.priority.toLowerCase()}">${project.priority}</span>
+              <span class="date-badge">${formattedDate}</span>
+            </div>
+          </div>
+        `;
+          });
+
+          projectsListElement.innerHTML = projectsHTML;
+        } catch (error) {
+          document.getElementById("pendingProjectsList").innerHTML = '<p class="no-items-message">Error loading projects. Please try again.</p>';
+        }
+      }
+
+      async function fetchPendingTasks() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userId = user && user.id;
+        if (!userId) return;
+
+        try {
+          const response = await fetch(`/api/tasks?userId=${userId}`);
+
+          if (response.status === 204) {
+            document.getElementById("pendingTasksList").innerHTML = '<p class="no-items-message">No pending tasks available.</p>';
+            return;
+          }
+
+          const data = await response.json();
+
+          if (!data.tasks || data.tasks.length === 0) {
+            document.getElementById("pendingTasksList").innerHTML = '<p class="no-items-message">No pending tasks available.</p>';
+            return;
+          }
+
+          const pendingTasks = data.tasks.filter((task) => task.status === "Pending");
+          const tasksListElement = document.getElementById("pendingTasksList");
+
+          if (pendingTasks.length === 0) {
+            tasksListElement.innerHTML = '<p class="no-items-message">No pending tasks available.</p>';
+            return;
+          }
+
+          pendingTasks.sort((a, b) => {
+            if (!a.dueDate && !b.dueDate) return 0;
+            if (!a.dueDate) return 1;
+            if (!b.dueDate) return -1;
+            return new Date(a.dueDate) - new Date(b.dueDate);
+          });
+
+          let tasksHTML = "";
+          pendingTasks.forEach((task) => {
+            let dateDisplay = "";
+            if (task.dueDate) {
+              const dueDate = new Date(task.dueDate);
+              const formattedDate = dueDate.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              });
+              dateDisplay = `<span class="date-badge">${formattedDate}</span>`;
+            }
+
+            tasksHTML += `
+          <div class="list-item">
+            <div class="item-header">${task.taskName}</div>
+            <div class="item-meta">
+              <span class="priority-badge priority-${task.priority.toLowerCase()}">${task.priority}</span>
+              ${dateDisplay}
+            </div>
+          </div>
+        `;
+          });
+
+          tasksListElement.innerHTML = tasksHTML;
+        } catch (error) {
+          document.getElementById("pendingTasksList").innerHTML = '<p class="no-items-message">Error loading tasks. Please try again.</p>';
+        }
+      }
+
+      async function fetchTeamMembers() {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userId = user && user.id;
+        if (!userId) return;
+
+        try {
+          const response = await fetch(`/get-projects/${userId}`);
+
+          if (response.status === 204) {
+            document.getElementById("teamMembersList").innerHTML = '<p class="no-items-message">No team members available.</p>';
+            return;
+          }
+
+          const projects = await response.json();
+          const memberMap = new Map();
+
+          projects.forEach((project) => {
+            if (project.teamMembers && project.teamMembers.length > 0) {
+              project.teamMembers.forEach((member) => {
+                const key = member.name;
+                if (!memberMap.has(key)) {
+                  memberMap.set(key, {
+                    name: member.name,
+                    role: member.role,
+                    projects: [project.projectName],
+                  });
+                } else {
+                  memberMap.get(key).projects.push(project.projectName);
+                }
+              });
+            }
+          });
+
+          const teamListElement = document.getElementById("teamMembersList");
+
+          if (memberMap.size === 0) {
+            teamListElement.innerHTML = '<p class="no-items-message">No team members available.</p>';
+            return;
+          }
+
+          const allMembers = Array.from(memberMap.values());
+          allMembers.sort((a, b) => a.name.localeCompare(b.name));
+
+          let membersHTML = "";
+          allMembers.forEach((member) => {
+            const firstLetter = member.name.charAt(0).toUpperCase();
+            const hashCode = member.name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            const hue = hashCode % 360;
+            const avatarColor = `hsl(${hue}, 70%, 55%)`;
+            const projectsList = member.projects.join(", ");
+
+            membersHTML += `
+          <div class="team-item">
+            <div class="member-avatar" style="background-color: ${avatarColor};">${firstLetter}</div>
+            <div class="member-details">
+              <div class="member-name">${member.name} <span style="font-weight: normal;">(${member.role})</span></div>
+              <div class="member-project">📂 ${projectsList}</div>
+            </div>
+          </div>
+        `;
+          });
+
+          teamListElement.innerHTML = membersHTML;
+        } catch (error) {
+          document.getElementById("teamMembersList").innerHTML = '<p class="no-items-message">Error loading team members. Please try again.</p>';
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        fetchDashboardData();
+        fetchPendingProjects();
+        fetchPendingTasks();
+        fetchTeamMembers();
+      });
+    </script>
+  </body>
+</html>

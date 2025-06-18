@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login to TaskFlow</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .navbar {
+        background-color: #3b82f6;
+        color: white;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(59, 130, 246, 0.15);
+      }
+
+      .navbar .brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .navbar .brand::before {
+        content: "🛡️";
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+      }
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+
+      main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      }
+
+      .auth-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 450px;
+        padding: 2.5rem;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .auth-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .auth-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .auth-header h1 {
+        color: #4a6fdc;
+        margin-bottom: 0.5rem;
+        font-size: 2rem;
+      }
+
+      .auth-header p {
+        color: #666;
+        font-size: 1.1rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #444;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        background-color: #fafafa;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #4a6fdc;
+        box-shadow: 0 0 0 3px rgba(74, 111, 220, 0.1);
+        background-color: white;
+      }
+
+      .btn {
+        padding: 0.85rem 1rem;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        font-size: 1rem;
+        width: 100%;
+        text-align: center;
+      }
+
+      .btn-primary {
+        background-color: #3b82f6;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #3d5ebd;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(74, 111, 220, 0.2);
+      }
+
+      .auth-footer {
+        text-align: center;
+        margin-top: 2rem;
+        color: #666;
+      }
+
+      .auth-footer a {
+        color: #3b82f6;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .auth-footer a:hover {
+        color: #3d5ebd;
+        text-decoration: underline;
+      }
+
+      @media (max-width: 576px) {
+        .auth-container {width: 90%;padding: 1.5rem;}
+        main {padding: 1rem;}
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="#" class="brand">TaskFlow</a>
+      <div class="nav-links"></div>
+    </nav>
+
+    <main>
+      <div class="auth-container">
+        <div class="auth-header">
+          <h1>Welcome Back</h1>
+          <p>Sign in to your account</p>
+        </div>
+        <form id="loginForm" action="#" method="post">
+          <div class="form-group">
+            <label for="emailinp">Email</label>
+            <input type="email" id="emailinp" name="email" class="form-control" required placeholder="Enter your email"/>
+          </div>
+          <div class="form-group">
+            <label for="passwordinp">Password</label>
+            <input type="password" id="passwordinp" name="password" class="form-control" required placeholder="Enter your password"/>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+
+        <div class="auth-footer">
+          <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+        </div>
+      </div>
+    </main>
+    <script>
+      document.getElementById("loginForm").addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const email = document.getElementById("emailinp").value;
+          const password = document.getElementById("passwordinp").value;
+          try {
+            const response = await fetch("http://localhost:5000/api/login", {
+              method: "POST",
+              headers: {"Content-Type": "application/json",},
+              body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+              localStorage.setItem("user", JSON.stringify(data));
+              window.location.href = "dashboard.html";
+            } else {
+              alert(data.message || "Login failed");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred during login");
+          }
+        });
+    </script>
+  </body>
+</html>
